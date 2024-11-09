@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 const logger = require("./logger");
 const { mongo, env } = require("./vars");
-const ash =
-  "mongodb+srv://Aakash:1234@cluster0.gqdixj8.mongodb.net/ecoHive?retryWrites=true&w=majority";
-
 // set mongoose Promise to Bluebird
 mongoose.Promise = Promise;
 
@@ -26,7 +23,7 @@ if (env === "development") {
  */
 exports.connect = () => {
   mongoose
-    .connect(ash, {
+    .connect(mongo.uri, {
       useCreateIndex: true,
       keepAlive: 1,
       useNewUrlParser: true,
