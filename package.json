@@ -11,8 +11,6 @@
     "yarn": "*"
   },
   "scripts": {
-    "precommit": "yarn lint",
-    "prestart": "yarn docs",
     "start": "cross-env NODE_ENV=production pm2 start ./src/index.js",
     "dev": "nodemon ./src/index.js",
     "lint": "eslint ./src/ --ignore-path .gitignore --ignore-pattern internals/scripts",
@@ -62,6 +60,7 @@
     "starter project"
   ],
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "axios": "^0.21.1",
     "bcryptjs": "2.4.3",
     "bluebird": "^3.5.0",
