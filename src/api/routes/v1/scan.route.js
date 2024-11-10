@@ -6,6 +6,8 @@ const {
   getElectricData,
   getWaterData,
   getOrganicData,
+  getEcoScore,
+  getAverageUnits,
 } = require("../../controllers/scannerController");
 const ScanRouter = express.Router();
 const { authorize, LOGGED_USER } = require("../../middlewares/auth");
@@ -34,5 +36,7 @@ ScanRouter.route("/organic").post(
   organic
 );
 ScanRouter.route("/organic").get(authorize(LOGGED_USER), getOrganicData);
+ScanRouter.route("/ecoScore").get(authorize(LOGGED_USER), getEcoScore);
+ScanRouter.route("/avgUnits").get(authorize(LOGGED_USER), getAverageUnits);
 
 module.exports = ScanRouter;

@@ -226,6 +226,59 @@ const getOrganicData = async (req, res, next) => {
   }
 };
 
+const getEcoScore = async (req, res, next) => {
+  try {
+    const userId = req.user._id; // The user ID is stored in req.user after token verification
+
+    // Fetch the latest ecoScore for the logged-in user
+    const ecoScoreEntry = await EcoScoreModel.findOne({ userId })
+      .sort({ createdAt: -1 })
+      .limit(1);
+
+    if (!ecoScoreEntry) {
+      return res
+        .status(404)
+        .json({ message: "No EcoScore found for this user" });
+    }
+
+    return res.status(200).json({
+      ecoScore: ecoScoreEntry.ecoScore,
+      timestamp: ecoScoreEntry.createdAt,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const getAverageUnits = async (req, res, next) => {
+  try {
+    const userId = req.user._id; // The user ID is stored in req.user after token verification
+
+    // Fetch all electric data entries for the logged-in user
+    const electricEntries = await electricData.find({ userId });
+
+    if (electricEntries.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No electric data found for this user" });
+    }
+
+    // Calculate the average units
+    const totalUnits = electricEntries.reduce(
+      (sum, entry) => sum + parseFloat(entry.units),
+      0
+    );
+    const averageUnit = totalUnits / electricEntries.length;
+
+    return res.status(200).json({
+      averageUnits: averageUnit,
+      totalEntries: electricEntries.length,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   electric,
   water,
@@ -233,4 +286,6 @@ module.exports = {
   getElectricData,
   getWaterData,
   getOrganicData,
+  getEcoScore,
+  getAverageUnits,
 };
