@@ -1,14 +1,16 @@
 const mongoose = require("mongoose");
+
 const { Schema } = mongoose;
 
-const imageSchema = new Schema(
+const ecoScoreSchema = new mongoose.Schema(
   {
-    data: Buffer,
-    contentType: String,
-    type: String,
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
+    },
+    ecoScore: {
+      type: Number,
+      required: true,
     },
   },
   {
@@ -16,4 +18,4 @@ const imageSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("Image", imageSchema);
+module.exports = mongoose.model("EcoScore", ecoScoreSchema);

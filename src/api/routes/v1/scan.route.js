@@ -1,8 +1,15 @@
 const express = require("express");
-const multer = require("multer");
-const { uploadImage } = require("../../controllers/imageController");
+const {
+  electric,
+  water,
+  organic,
+  getElectricData,
+  getWaterData,
+  getOrganicData,
+} = require("../../controllers/scannerController");
 const ScanRouter = express.Router();
 const { authorize, LOGGED_USER } = require("../../middlewares/auth");
+const multer = require("multer");
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -10,7 +17,22 @@ const upload = multer({ storage });
 ScanRouter.route("/electric").post(
   authorize(LOGGED_USER),
   upload.single("image"),
-  uploadImage
+  electric
 );
+ScanRouter.route("/electric").get(authorize(LOGGED_USER), getElectricData);
+
+ScanRouter.route("/water").post(
+  authorize(LOGGED_USER),
+  upload.single("image"),
+  water
+);
+ScanRouter.route("/water").get(authorize(LOGGED_USER), getWaterData);
+
+ScanRouter.route("/organic").post(
+  authorize(LOGGED_USER),
+  upload.single("image"),
+  organic
+);
+ScanRouter.route("/organic").get(authorize(LOGGED_USER), getOrganicData);
 
 module.exports = ScanRouter;
